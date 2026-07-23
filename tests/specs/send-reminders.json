@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/send_reminders",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Ручная отправка напоминаний участникам"
+            }
+          }
+        ],
+        "send": {
+          "text": "/send_reminders"
+        }
+      }
+    ]
+  }
+]
