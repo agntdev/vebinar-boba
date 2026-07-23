@@ -1,19 +1,17 @@
 [
   {
-    "name": "/send_reminders",
+    "name": "/send_reminders — no participants",
     "steps": [
       {
+        "send": { "text": "/send_reminders" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Ручная отправка напоминаний участникам"
+              "text": "No registered participants yet.\n\nShare the bot link to let people sign up."
             }
           }
-        ],
-        "send": {
-          "text": "/send_reminders"
-        }
+        ]
       }
     ]
   }

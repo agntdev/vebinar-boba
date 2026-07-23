@@ -1,19 +1,74 @@
 [
   {
-    "name": "Отменить запись",
+    "name": "Отменить запись — no registration",
     "steps": [
       {
+        "send": { "callback": "booking:cancel" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Отменить регистрацию на вебинар"
+              "text": "You don't have an active registration yet.\n\nTap the button below to register for the webinar."
             }
           }
-        ],
-        "send": {
-          "callback": "booking:cancel"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Отменить запись — full flow",
+    "steps": [
+      {
+        "send": { "callback": "booking:start" },
+        "expect": [
+          { "method": "sendMessage", "payload": { "text": "Great! Let's register you for the webinar.\n\nWhat's your full name?" } }
+        ]
+      },
+      {
+        "send": { "text": "John Smith" },
+        "expect": [
+          { "method": "sendMessage", "payload": { "text": "Nice to meet you, John Smith!\n\nWhat's your email address?" } }
+        ]
+      },
+      {
+        "send": { "text": "john@example.com" },
+        "expect": [
+          { "method": "sendMessage", "payload": { "text": "Got it! Now, what's your phone number?" } }
+        ]
+      },
+      {
+        "send": { "text": "+79991234567" },
+        "expect": [
+          { "method": "sendMessage", "payload": { "text": "Please confirm your details:\n\nName: John Smith\nEmail: john@example.com\nPhone: +79991234567\n\nIs everything correct?" } }
+        ]
+      },
+      {
+        "send": { "callback": "booking:confirm:yes" },
+        "expect": [
+          { "method": "editMessageText", "payload": { "text": "You're all set! 🎉\n\nYou're registered for the webinar. We'll send you a reminder before the event.\n\nTap the menu button below if you need anything else." } }
+        ]
+      },
+      {
+        "send": { "callback": "booking:cancel" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "You're registered as John Smith.\n\nAre you sure you want to cancel your registration?"
+            }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "booking:cancel:confirm:yes" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Your registration has been cancelled.\n\nIf you change your mind, you can always register again."
+            }
+          }
+        ]
       }
     ]
   }
