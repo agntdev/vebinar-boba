@@ -2,11 +2,33 @@ import { Composer } from "grammy";
 import { createBot, type BotContext, type CreateBotOptions } from "./toolkit/index.js";
 import type { StorageAdapter } from "grammy";
 
+export interface Participant {
+  name: string;
+  email: string;
+  phone: string;
+  telegram_id: number;
+  status: "registered" | "cancelled";
+  registration_timestamp: number;
+}
+
+export interface ParticipantStorage {
+  [chatId: string]: Participant;
+}
+
 // The per-chat session shape (ephemeral conversation state only). Extend as the
 // bot grows. Durable domain data must NOT live here — use the toolkit's
 // persistent storage (see AGENTS.md).
 export interface Session {
-  // example: step?: "awaiting_amount";
+  /** Current step in the registration flow */
+  step?: "idle" | "awaiting_name" | "awaiting_email" | "awaiting_phone" | "confirming";
+  /** Temporary registration data while collecting inputs */
+  registration?: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  /** Registered participants (keyed by telegram ID) */
+  participants?: ParticipantStorage;
 }
 
 export type Ctx = BotContext<Session>;
